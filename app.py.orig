@@ -7,23 +7,18 @@ from pptx import Presentation
 from PIL import Image
 import google.generativeai as genai
 import pandas as pd
-import os
-from dotenv import load_dotenv
-
-# Load environment variables from .env file
-load_dotenv()
 
 # ----------------- MYSQL CONNECTION -----------------
-DB_HOST = os.getenv("DB_HOST", "localhost")
-DB_USER = os.getenv("DB_USER", "root")
-DB_PASS = os.getenv("DB_PASS")  # your MySQL password from environment variable
-DB_NAME = os.getenv("DB_NAME", "multimodal")
+DB_HOST = "localhost"
+DB_USER = "root"
+DB_PASS = "6309625235Ll@"  # your MySQL password
+DB_NAME = "multimodal"
 
 def get_connection():
     return pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASS, database=DB_NAME)
 
 # ----------------- GEMINI CONFIG -----------------
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))  # API key from environment variable
+genai.configure(api_key="AIzaSyD5X-wZ6Nrrqe28WW_tnvFQtraJPMyop4s")
 model = genai.GenerativeModel("models/gemini-2.5-flash")
 
 # ----------------- FILE TEXT EXTRACTION -----------------
@@ -136,7 +131,6 @@ if uploaded_files:
             sql = "INSERT INTO files (filename, filetype, content) VALUES (%s, %s, %s)"
             cur.execute(sql, (file.name, file_type, text))
             conn.commit()
-            cur.close()
             conn.close()
             st.success(f"✅ {file.name} saved to database.")
         except Exception as e:
